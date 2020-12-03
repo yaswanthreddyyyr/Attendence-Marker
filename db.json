@@ -1,0 +1,111 @@
+{
+    "students":[
+        {
+            "id":"1",
+            "name":"Yaswanth Reddy",
+            "email":"190010045@iitdh.ac.in",
+            "studentid":"1"
+
+        },
+        {
+            "id":"2",
+            "name":"Yaswanth ",
+            "email":"190010045@gmail.com",
+            "studentid":"2"
+
+        },
+        {
+            "id":"3",
+            "name":"Reddy",
+            "email":"reddyyaswanth57@gmail.com",
+            "studentid":"3"
+
+        },
+        {
+            "id":"4",
+            "name":"Gowtham",
+            "email":"190010031@iitdh.ac.in",
+            "studentid":"4"
+
+        }
+
+    ],
+
+
+    "faculty":[
+        {
+            "id":"1",
+            "name":"Tamal",
+            "email":"tamal@iitdh.ac.in",
+            "facultyid":"1"
+        },
+        {
+            "id":"2",
+            "name":"Sandeep",
+            "email":"sandeep@iitdh.ac.in",
+            "facultyid":"2"
+        },
+        {
+            "id":"3",
+            "name":"Bun",
+            "email":"bun@iitdh.ac.in",
+            "facultyid":"3"
+        }
+
+
+    ],
+    "courses":[
+        {
+            "id":"1",
+            "name":"Economics",
+            "facultyid":"3",
+            "email":"reddyyaswanth57@gmail.com"
+        },
+        {
+            "id":"2",
+            "name":"DS",
+            "facultyid":"2",
+            "email":"sandeep@iitdh.ac.in"
+        },
+        {
+            "id":"3",
+            "name":"SSL",
+            "facultyid":"1",
+            "email":"tamal@iitdh.ac.in"
+        },
+        {
+            "id":"4",
+            "name":"Some seccond Year course",
+            "facultyid":"1",
+            "email":"reddyyaswanth57@gmail.com"
+        }
+
+    ],
+    "Economics":[
+        {
+            "id":"1",
+            "name":"Yaswanth Reddy",
+            "email":"190010045@gmail.com"
+        },
+        {
+            "id":"2",
+            "name":" Reddy",
+            "email":"190010044@gmail.com"
+        },
+        {
+            "id":"3",
+            "name":"YYR",
+            "email":"reddyyaswanth57@gmail.com"
+        }
+
+    ],
+
+    "Form":[
+        {
+            
+        }
+    ]
+
+
+
+}
