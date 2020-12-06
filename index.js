@@ -5,6 +5,10 @@ let cr=0;
 let attendence=new Array;
 let courses=new Array;
 function SignOut(){
+   var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
   window.location.reload();
 }
 function onSuccess(googleUser) {
@@ -29,7 +33,13 @@ function onSuccess(googleUser) {
        }
        GAdd();
        document.getElementById('btn1').addEventListener('click',getCourses);
-       
+       var so='';
+       so+=`
+       <button onclick="SignOut()">
+                Signout
+            </button>
+       `;
+       document.getElementById('signOut').innerHTML=so;
        
     }
     function onFailure(error) {
@@ -52,14 +62,20 @@ function addArray(value){
   courses.push(value);
 }
 function getStudents(name){
-  fetch('http://localhost:3000/'+name)
+  // fetch('http://localhost:3000/'+name)
+  fetch('http://ssl-backend-django.herokuapp.com/api/getAttandance?email='+a+'&course='+name)
   .then(res =>res.json())
   .then((data)=>{
     console.log(data);
+    data = JSON.parse(data);
+    let stud=data.enrolled_students.students;
+    console.log(stud);
     // let output='<h2>Mark Attendence</h2>';
     let output='';
     output+=`<form id="attendenceform" >`;
-    data.forEach(function(user){
+    stud.forEach(function(user){
+      // user = JSON.parse(user);
+      console.log(user);
       output+=`
       <p>${user.name}</p>
         <label for="${user.email}">Present</label>
@@ -84,21 +100,24 @@ function getStudents(name){
       data.forEach(
         function(user){
           attendence.push(user.value);
-          // console.log(attendence);
+          
         }
       )
+      console.log(attendence);
     })
 
   })
 
 }
 function getCourses(){
-  fetch('http://www.localhost:3000/courses?email='+a)
+  fetch('http://ssl-backend-django.herokuapp.com/api/getCourses?email='+a)
   .then(res => res.json())
   .then((data)=>{
     console.log(data);
     let output='<h2>My Courses</h2>';
+    // console.log(data.name);
     data.forEach(function(user){
+      user=JSON.parse(user);
       cr=cr+1;
       output+=`<button id="button${cr}">${user.name} </button><br>`;
       // console.log(user.name);
@@ -122,7 +141,7 @@ function getCourses(){
 }
 
 
-console.log(attendence);  
+// console.log(attendence);  
 
 
   
