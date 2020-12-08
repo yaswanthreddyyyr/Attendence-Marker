@@ -111,29 +111,38 @@ function getStudents(name){
     console.log(stud);
     // let output='<h2>Mark Attendence</h2>';
     let output='';
-    output+=`<form id="attendenceform" >`;
+    
+    
+    output+=`<form id="attendenceform" >
+    <table style="width:40%">
+    <tr>
+    <th><u>Name</u></th>
+    <th colspan="2"><u>Attandence</u></th>
+  </tr>
+    
+    `;
     
     stud.forEach(function(user){
       // user = JSON.parse(user);
       console.log(user);
       
       output+=`
-      
-      
-       <b>${user.name}:</b>
-        <label for="${user.email}" class="form-check-label">Present</label>
-        <input type="radio"  id="P" value="P" name="${user.email}" required class="form-check-input">
+      <tr>
+      <td>
+       <b>${user.name}:</b></td>
+        <td><label for="${user.email}" class="form-check-label">Present</label>
+        <input type="radio"  id="P" value="P" name="${user.email}" required class="form-check-input"></td>
         
-        <label for="${user.email}" class="form-check-label">Absent</label>
-        <input type="radio"  id="A" value="A"  name="${user.email}" required class="form-check-input">
+        <td><label for="${user.email}" class="form-check-label">Absent</label>
+        <input type="radio"  id="A" value="A"  name="${user.email}" required class="form-check-input"></td>
         
-        <br>
+        <br></tr>
         `;
     
     })
     
 
-    output+=`<br><input type="submit" value="Submit" class="btn btn-primary" >`;
+    output+=`</table><br><input type="submit" value="Submit" class="btn btn-primary" >`;
     output+=`</form>`;
     document.getElementById('output').innerHTML=output;
     
@@ -185,10 +194,10 @@ function getStudents(name){
 });
       let new_out='';
       new_out=`
-      ${p} out of ${n} are present in Today's Class
+     <!-- ${p} out of ${n} are present in Today's Class-->
       <br>
       <br>
-      <button onclick="window.location.reload()" class="btn btn-dark">Back</button>
+      <button onclick="window.location.reload()" class="btn btn-dark" id="back">Back</button>
       
       `;
       document.getElementById('output').innerHTML=new_out;
