@@ -13,6 +13,7 @@ function SignOut(){
   window.location.reload();
 }
 function onSuccess(googleUser) {
+  
 
       console.log('Logged in as: ' + googleUser.getBasicProfile());
        var profile=googleUser.getBasicProfile();
@@ -25,6 +26,7 @@ function onSuccess(googleUser) {
        
         
        `;
+      //  document.getElementById('welco').innerHTML=`Hello ${profile.getUserName()}`;0
       
       //  profi+=`
       //  <center>
@@ -33,11 +35,14 @@ function onSuccess(googleUser) {
       //  Email:${profile.getEmail()}
       //   </center>
       //  `
+      // let name=profile.getName();
        
        document.getElementById('im').innerHTML=image;
        console.log(a);
        document.getElementById("signin").style.visibility = "hidden";
       //  document.getElementById("h4").style.visibility = "hidden";
+      // document.getElementById('welc').innerHTML=`Hello ${name}`;
+      console.log(name);
         function check(){
           let b=a.slice(-11);
           let c='iitdh.ac.in'
@@ -72,6 +77,7 @@ check();
             </button>
        `;
        document.getElementById('signOut').innerHTML=so;
+       document.getElementById('welco').innerHTML=`<br><br>Hello! ${profile.getName()} `;
        
     }
     function onFailure(error) {
@@ -127,7 +133,7 @@ function getStudents(name){
     })
     
 
-    output+=`<br><input type="submit" value="Submit" class="btn btn-dark" >`;
+    output+=`<br><input type="submit" value="Submit" class="btn btn-primary" >`;
     output+=`</form>`;
     document.getElementById('output').innerHTML=output;
     
@@ -192,6 +198,7 @@ function getStudents(name){
 
 }
 function getCourses(){
+  
   fetch('http://ssl-backend-django.herokuapp.com/api/getCourses?email='+a)
   .then(res => res.json())
   .then((data)=>{
@@ -220,6 +227,7 @@ function getCourses(){
     })
   }
 })
+document.getElementById('welco').innerHTML=``;
 }
 
 
