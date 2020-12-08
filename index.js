@@ -3,51 +3,40 @@ let profi='';
 var a='';
 let cr=0;
 let image_url='';
+instructor_name='';
 let attendence=new Array;
 let courses=new Array;
 function SignOut(){
    var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-      console.log('User signed out.');
+      // console.log('User signed out.');
     });
   window.location.reload();
 }
 function onSuccess(googleUser) {
   
 
-      console.log('Logged in as: ' + googleUser.getBasicProfile());
+      // console.log('Logged in as: ' + googleUser.getBasicProfile());
        var profile=googleUser.getBasicProfile();
        a=profile.getEmail();
        image_url=profile.getImageUrl();
+       instructor_name=profile.getName();
        let image=`
-       <a class="image-link" href="${image_url}">
+       
     <img class="rounded-circle article-img" src="${image_url}" id="img">
-    </a>
+    
        
         
        `;
-      //  document.getElementById('welco').innerHTML=`Hello ${profile.getUserName()}`;0
       
-      //  profi+=`
-      //  <center>
-      //  <img class="rounded-circle article-img" src="${image_url}" id="img">
-      //  Name:${profile.getName()}
-      //  Email:${profile.getEmail()}
-      //   </center>
-      //  `
-      // let name=profile.getName();
        
        document.getElementById('im').innerHTML=image;
-       console.log(a);
+      //  console.log(a);
        document.getElementById("signin").style.visibility = "hidden";
-      //  document.getElementById("h4").style.visibility = "hidden";
-      // document.getElementById('welc').innerHTML=`Hello ${name}`;
-      console.log(name);
+      // console.log(name);
         function check(){
           let b=a.slice(-11);
           let c='iitdh.ac.in'
-          console.log(b);
-          console.log(c);
           if(b!=c){
             
             window.alert("Please login with iitdh email id")
@@ -101,20 +90,44 @@ function addArray(value){
 }
 
 function getStudents(name){
-  // document.getElementById('welco').visibility='hidden';
   fetch('http://ssl-backend-django.herokuapp.com/api/getAttandance?email='+a+'&course='+name)
   .then(res =>res.json())
   .then((data)=>{
-    console.log(data);
+    // console.log(data);
     data = JSON.parse(data);
     let stud=data.enrolled_students.students;
-    console.log(stud);
-    // let output='<h2>Mark Attendence</h2>';
-    let output='';
+    // console.log(stud);
+    let pres=data.number_present;
+    // console.log(pres);
+    let v='';
+    v+=`
+    <table class="dates">
+    <tr>
+    <th><u>Date</u></th>
     
+    <th><u>Present Percentage</u></th></tr>
+    `;
+    var key;
+    var num_students=stud.length;
+    
+    for (key in pres){
+      v+=`
+      <tr>
+      <td>${key}</td>
+      
+      
+      <td>${percentage(pres[key],num_students)}%</td>
+      </tr>
+      `;
+    }
+    v+=`</table>
+    `;
+
+    let output='';
+ 
     
     output+=`<form id="attendenceform" >
-    <table style="width:40%">
+    <table  class="atte">
     <tr>
     <th><u>Name</u></th>
     <th colspan="2"><u>Attandence</u></th>
@@ -123,8 +136,7 @@ function getStudents(name){
     `;
     
     stud.forEach(function(user){
-      // user = JSON.parse(user);
-      console.log(user);
+      // console.log(user);
       
       output+=`
       <tr>
@@ -136,7 +148,7 @@ function getStudents(name){
         <td><label for="${user.email}" class="form-check-label">Absent</label>
         <input type="radio"  id="A" value="A"  name="${user.email}" required class="form-check-input"></td>
         
-        <br></tr>
+        </tr>
         `;
     
     })
@@ -144,23 +156,42 @@ function getStudents(name){
 
     output+=`</table><br><input type="submit" value="Submit" class="btn btn-primary" >`;
     output+=`</form>`;
-    document.getElementById('output').innerHTML=output;
     
-    document.getElementById('attendenceform').addEventListener('submit',function(e){
+    new_output=`
+    <div class="row">
+  <div class="column" id="left_column"></div>
+  <div class="column" id="right_column"></div>
+</div>`;
+    document.getElementById('output').innerHTML=new_output;
+    let left=`<br><br><h3>Course Name:${name}</h3>
+    <br>
+    <h4>Instuctor:${instructor_name}</h4>
+    <br>
+    <button class="btn btn-dark" id="mark">Mark Attandance</button>
+    `;
+    document.getElementById('left_column').innerHTML=left;
+    document.getElementById('right_column').innerHTML=v;
+    document.getElementById('mark').addEventListener('click',function(e){
+      document.getElementById('right_column').innerHTML=output;
+    
+
+
+  document.getElementById('attendenceform').addEventListener('submit',function(e){
       e.preventDefault();
-      // var formData = new FormData(document.querySelector('form'));
+      
       var data = $('form').serializeArray();
       
-      console.log(data);
+      // console.log(data);
       data.forEach(
         function(user){
           attendence.push(user.value);
           
         }
       )
-      console.log(attendence);
-      fetch('http://ssl-backend-django.herokuapp.com/api/setAttandance?email='+a+'&course='+name+'&attandance='+attendence)
-      .then(res => console.log(res.status()))
+      // console.log(attendence);
+
+      fetch('http://ssl-backend-django.herokuapp.com/api/setAttandance?email='+a+'&course='+name+'&attandance='+JSON.stringify(data))
+      .then(res => console.log(res.status))
       let p=0;
       let n=attendence.length;
       for(let i=0;i<attendence.length;i++){
@@ -168,26 +199,18 @@ function getStudents(name){
           p++;
         }
       }
-      console.log(p);
+      // console.log(p);
       anychart.onDocumentReady(function() {
 
-  // set the data
+
   var data = [
       {x: "Present", value: p},
       {x: "Absent", value: n-p},
       
   ];
-
-  // create the chart
   var chart = anychart.pie();
-
-  // set the chart title
   chart.title("Today's Attandance");
-
-  // add the data
   chart.data(data);
-
-  // display the chart in the container
   chart.container('container');
   chart.draw();
 
@@ -202,6 +225,8 @@ function getStudents(name){
       `;
       document.getElementById('output').innerHTML=new_out;
     })
+    })
+    
 
   })
 
@@ -211,14 +236,12 @@ function getCourses(){
   fetch('http://ssl-backend-django.herokuapp.com/api/getCourses?email='+a)
   .then(res => res.json())
   .then((data)=>{
-    console.log(data);
+    // console.log(data);
     let output='<h2>My Courses</h2><br>';
-    // console.log(data.name);
     data.forEach(function(user){
       user=JSON.parse(user);
       cr=cr+1;
       output+=`<button id="button${cr}"  class="btn btn-dark">${user.name}</button> <br> <br>`;
-      // console.log(user.name);
       addArray(user.name);
        
       
@@ -226,10 +249,8 @@ function getCourses(){
   
     
     document.getElementById('output').innerHTML= output;
-    // console.log(data);
-  console.log(cr);
   for(let i=1;i<=cr;i++){
-    console.log(courses[i-1]);
+    // console.log(courses[i-1]);
     document.getElementById('button'+i).addEventListener('click',function(){
       
       getStudents(courses[i-1]);
@@ -240,8 +261,10 @@ document.getElementById('welco').innerHTML=``;
 }
 
 
-// console.log(attendence);  
 
+function percentage(a,b){
+  return Math.round(((a/b)*100),2);
+}
 
   
 
